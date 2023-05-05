@@ -16,7 +16,7 @@ class ServerlessBackendStack(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
-        bucket_name = _cfnParameter(self, "el-manifests", type="String",
+        bucket_name = _cfnParameter(self, "bucketName", type="String",
                                     description="Bucket to temporarily store manifest files for the EL Portal.")
         my_bucket = _s3.Bucket(self, id='s3bucket',
                                bucket_name=bucket_name.value_as_string)

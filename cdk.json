@@ -18,6 +18,7 @@
     "environments": {
         "dev": {
          "AWS_DEFAULT_REGION": "us-east-1",
+         "bucketName":"elmanifests.dev",
          "TAGS": {
             "CostCenter": "NO PROGRAM / 000000",
             "OwnerEmail": "platform@sagebase.org"
@@ -26,6 +27,7 @@
         },
         "prod": {
           "AWS_DEFAULT_REGION": "us-east-1",
+         "bucketName":"elmanifests.prod",
           "TAGS": {
             "CostCenter": "NO PROGRAM / 000000",
             "OwnerEmail": "platform@sagebase.org"
