@@ -1,4 +1,3 @@
-
 name: main
 
 on:
@@ -46,7 +45,8 @@ jobs:
     secrets: inherit
     with:
       CONTEXT: dev
-      ROLE_TO_ASSUME: arn:aws:iam::631692904429:role/sagebase-github-oidc-sage-ProviderRoles3filehostin-8LPZFSITXB0I
+      ROLE_TO_ASSUME:
+        arn:aws:iam::631692904429:role/sagebase-github-oidc-sage-ProviderRoles3filehostin-8LPZFSITXB0I
 
 # Uncomment and fill out 'ROLE_TO_ASSUME' to deploy to prod
 #  cdk-deploy-prod:
@@ -56,4 +56,5 @@ jobs:
 #    secrets: inherit
 #    with:
 #      CONTEXT: prod
-#      ROLE_TO_ASSUME: arn:aws:iam::<production-account-number>:role/<production-role-name>
+#      ROLE_TO_ASSUME:
+#        arn:aws:iam::<production-account-number>:role/<production-role-name>

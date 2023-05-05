@@ -8,15 +8,15 @@ import imghdr
 import requests
 
 s3 = boto3.client('s3')
-   
+
 def stream_to_s3(url, key):
     s3_bucket = os.environ['bucket']
-	session = requests.Session()
-	response = session.get(url, stream=True)
-	with response as part:
-	    part.raw.decode_content = True
-	    conf = boto3.s3.transfer.TransferConfig(multipart_threshold=10000, max_concurrency=4)
-	    s3.upload_fileobj(part.raw, s3_bucket, key, Config=conf)
+    session = requests.Session()
+    response = session.get(url, stream=True)
+    with response as part:
+        part.raw.decode_content = True
+        conf = boto3.s3.transfer.TransferConfig(multipart_threshold=10000, max_concurrency=4)
+        s3.upload_fileobj(part.raw, s3_bucket, key, Config=conf)
 
 def handler(event, context):
     print(event)
