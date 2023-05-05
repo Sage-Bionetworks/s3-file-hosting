@@ -27,4 +27,4 @@ class ServerlessBackendStack(Stack):
         my_api = _apigateway.LambdaRestApi(
             self, id='lambdaapi', rest_api_name='formapi', handler=my_lambda, proxy=True)
         postData = my_api.root.add_resource("form")
-        postData.add_method("POST")  # POST images/files & metadata
+        postData.add_method("POST")

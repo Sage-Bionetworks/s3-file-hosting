@@ -18,21 +18,19 @@
     "environments": {
         "dev": {
          "AWS_DEFAULT_REGION": "us-east-1",
-         "bucketName":"elmanifests.dev",
+         "bucketName":"dev.el-manifests.sagebase.org",
          "TAGS": {
             "CostCenter": "NO PROGRAM / 000000",
             "OwnerEmail": "platform@sagebase.org"
-          },
-          "cidr": "172.45.0.0/16"
+          }
         },
         "prod": {
           "AWS_DEFAULT_REGION": "us-east-1",
-         "bucketName":"elmanifests.prod",
+         "bucketName":"prod.el-manifests.sagebase.org",
           "TAGS": {
             "CostCenter": "NO PROGRAM / 000000",
             "OwnerEmail": "platform@sagebase.org"
-          },
-          "cidr": "172.46.0.0/16"
+          }
         }
     }
   }

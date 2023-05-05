@@ -7,7 +7,7 @@ from serverless_backend.serverless_backend_stack import ServerlessBackendStack
 import helpers
 
 app = cdk.App(context=helpers.get_deployment_context())
-ServerlessBackendStack(app, "ServerlessBackendStack",
+ServerlessBackendStack(app, "S3FileUpload",
     )
 
 app.synth()

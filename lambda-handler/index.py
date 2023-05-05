@@ -13,7 +13,11 @@ def stream_to_s3(url, key):
     s3_bucket = os.environ['bucket']
     session = requests.Session()
     response = session.get(url, stream=True)
+    # TODO look for Content-Disposition header, which might have file name:
+    # Content-Disposition: ...; filename="foo.txt"
+    # If so, use it in the saved file
     with response as part:
+    	# TODO enforce size limit
         part.raw.decode_content = True
         conf = boto3.s3.transfer.TransferConfig(multipart_threshold=10000, max_concurrency=4)
         s3.upload_fileobj(part.raw, s3_bucket, key, Config=conf)
@@ -26,15 +30,17 @@ def handler(event, context):
     data = json.loads(event['body'])
     url = data['url']
 
-    if upload_image(url, key):
+    if stream_to_s3(url, key):
         return {
             'statusCode': 200,
+            # TODO implement CORS
             'headers': {
                 'Access-Control-Allow-Headers': '*',
                 'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+                'Access-Control-Allow-Methods': 'OPTIONS,POST,GET',
+                'Content-Type': 'application/json'
             },
-            'body': json.dumps('Success!') # TODO return presigned URL
+            'body': json.dumps({'url','TODO'})
         }
     return {
         'statusCode': 500,
