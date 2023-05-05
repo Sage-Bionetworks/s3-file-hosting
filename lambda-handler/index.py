@@ -9,6 +9,9 @@ import requests
 
 s3 = boto3.client('s3')
 
+# one day in seconds
+EXPIRES_IN_SECONDS = 60*60*24
+
 def stream_to_s3(url, key):
     s3_bucket = os.environ['bucket']
     session = requests.Session()
@@ -21,6 +24,9 @@ def stream_to_s3(url, key):
         part.raw.decode_content = True
         conf = boto3.s3.transfer.TransferConfig(multipart_threshold=10000, max_concurrency=4)
         s3.upload_fileobj(part.raw, s3_bucket, key, Config=conf)
+    response = s3.generate_presigned_url('get_object',
+        Params={'Bucket': s3_bucket,'Key': key}, ExpiresIn=EXPIRES_IN_SECONDS)
+    return response
 
 def handler(event, context):
     print(event)
@@ -30,7 +36,9 @@ def handler(event, context):
     data = json.loads(event['body'])
     url = data['url']
 
-    if stream_to_s3(url, key):
+    try:
+        url = stream_to_s3(url, key)
+
         return {
             'statusCode': 200,
             'headers': {
@@ -40,14 +48,10 @@ def handler(event, context):
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*.synapse.org'
             },
-            'body': json.dumps({'url','TODO'})
+            'body': json.dumps({'url',url})
         }
-    return {
-        'statusCode': 500,
-        'headers': {
-            'Access-Control-Allow-Headers': '*',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
-        },
-        'body': json.dumps('Request Failed!')
-    }
+    except:
+        return {
+            'statusCode': 500,
+            'body': json.dumps('Request Failed!') # TODO include error message
+        }
