@@ -16,8 +16,8 @@ class ServerlessBackendStack(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
-        bucket_name = _cfnParameter(self, "uploadBucketName", type="String",
-                                    description="The name of the Amazon S3 bucket where uploaded images will be stored.")
+        bucket_name = _cfnParameter(self, "el-manifests", type="String",
+                                    description="Bucket to temporarily store manifest files for the EL Portal.")
         my_bucket = _s3.Bucket(self, id='s3bucket',
                                bucket_name=bucket_name.value_as_string)
         my_lambda = _lambda.Function(self, id='lambdafunction', function_name="formlambda", runtime=_lambda.Runtime.PYTHON_3_7,

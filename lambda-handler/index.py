@@ -5,32 +5,28 @@ import os
 import uuid
 import botocore
 import imghdr
+import requests
 
 s3 = boto3.client('s3')
-
-def upload_image(image_id, img, userid):
-    bucket = os.environ['bucket']
-    extension = imghdr.what(None, h=img)
-    key = f"{image_id}.{extension}"
-    try:
-        s3.put_object(Bucket=bucket, Key=key, Body=img)
-        upload_metadata(key, userid)
-    except botocore.exceptions.ClientError as e:
-        print(e)
-        return False
-    return True
-
+   
+def stream_to_s3(url, key):
+    s3_bucket = os.environ['bucket']
+	session = requests.Session()
+	response = session.get(url, stream=True)
+	with response as part:
+	    part.raw.decode_content = True
+	    conf = boto3.s3.transfer.TransferConfig(multipart_threshold=10000, max_concurrency=4)
+	    s3.upload_fileobj(part.raw, s3_bucket, key, Config=conf)
 
 def handler(event, context):
     print(event)
     # Generate random image id
-    image_id = str(uuid.uuid4())
+    key = str(uuid.uuid4())
 
     data = json.loads(event['body'])
-    userid = data['userid']
-    img = base64.b64decode(data['photo'])
+    url = data['url']
 
-    if upload_image(image_id, img, userid):
+    if upload_image(url, key):
         return {
             'statusCode': 200,
             'headers': {
@@ -38,7 +34,7 @@ def handler(event, context):
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
             },
-            'body': json.dumps('Success!')
+            'body': json.dumps('Success!') # TODO return presigned URL
         }
     return {
         'statusCode': 500,
