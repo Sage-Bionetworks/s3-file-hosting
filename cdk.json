@@ -1,0 +1,37 @@
+{
+  "app": "python3 app.py",
+  "watch": {
+    "include": [
+      "**"
+    ],
+    "exclude": [
+      "README.md",
+      "cdk*.json",
+      "requirements*.txt",
+      "source.bat",
+      "**/__init__.py",
+      "python/__pycache__",
+      "tests"
+    ]
+  },
+  "context": {
+    "environments": {
+        "dev": {
+         "AWS_DEFAULT_REGION": "us-east-1",
+         "TAGS": {
+            "CostCenter": "NO PROGRAM / 000000",
+            "OwnerEmail": "platform@sagebase.org"
+          },
+          "cidr": "172.45.0.0/16"
+        },
+        "prod": {
+          "AWS_DEFAULT_REGION": "us-east-1",
+          "TAGS": {
+            "CostCenter": "NO PROGRAM / 000000",
+            "OwnerEmail": "platform@sagebase.org"
+          },
+          "cidr": "172.46.0.0/16"
+        }
+    }
+  }
+}
