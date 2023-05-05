@@ -17,7 +17,7 @@ def stream_to_s3(url, key):
     # Content-Disposition: ...; filename="foo.txt"
     # If so, use it in the saved file
     with response as part:
-    	# TODO enforce size limit
+        # TODO enforce size limit
         part.raw.decode_content = True
         conf = boto3.s3.transfer.TransferConfig(multipart_threshold=10000, max_concurrency=4)
         s3.upload_fileobj(part.raw, s3_bucket, key, Config=conf)
@@ -33,12 +33,12 @@ def handler(event, context):
     if stream_to_s3(url, key):
         return {
             'statusCode': 200,
-            # TODO implement CORS
             'headers': {
                 'Access-Control-Allow-Headers': '*',
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'OPTIONS,POST,GET',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*.synapse.org'
             },
             'body': json.dumps({'url','TODO'})
         }
