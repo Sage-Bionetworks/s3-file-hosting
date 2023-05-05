@@ -10,6 +10,5 @@ __pycache__
 .cdk.staging
 cdk.out
 
-.github/
 .project
 .settings/
