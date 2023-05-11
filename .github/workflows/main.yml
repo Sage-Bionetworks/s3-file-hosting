@@ -46,7 +46,7 @@ jobs:
     with:
       CONTEXT: dev
       ROLE_TO_ASSUME:
-        arn:aws:iam::631692904429:role/sagebase-github-oidc-sage-ProviderRole
+        arn:aws:iam::631692904429:role/sagebase-github-oidc-sage-bionetworks-s3-file-hosting-infra
 
 # Uncomment and fill out 'ROLE_TO_ASSUME' to deploy to prod
 #  cdk-deploy-prod:
